@@ -1,1 +1,1 @@
-include ':app', ':shake'
+include ':app', ':shake', ':self'
