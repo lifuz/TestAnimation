@@ -92,10 +92,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        locationClient.stop();
+    }
+
     /**
      * 授权结果返回方法
+     *
      * @param requestCode  授权请求的返回吗
-     * @param permissions 请求那些权限
+     * @param permissions  请求那些权限
      * @param grantResults 每个权限的授权结果
      */
     @Override
@@ -112,4 +120,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 }
