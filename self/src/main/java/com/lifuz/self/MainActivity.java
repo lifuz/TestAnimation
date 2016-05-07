@@ -1,7 +1,14 @@
 package com.lifuz.self;
 
-import android.support.v7.app.AppCompatActivity;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -10,6 +17,9 @@ import com.baidu.mapapi.SDKInitializer;
 import com.lifuz.self.listener.MyLocationListener;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE = 110;
+    private static final String TAG = "MainActivity";
 
     private LocationClient locationClient = null;
     private BDLocationListener myListener = new MyLocationListener();
@@ -27,8 +37,34 @@ public class MainActivity extends AppCompatActivity {
         locationClient = new LocationClient(getApplicationContext());
         locationClient.registerLocationListener(myListener);
 
-//        locationClient.r
         initLocation();
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            int checkACCESSCOARSELOCATION = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
+            int checkACCESSFINELOCATION = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+
+            String[] permissions = new String[] {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
+
+            if (checkACCESSCOARSELOCATION != PackageManager.PERMISSION_GRANTED
+                    || checkACCESSFINELOCATION != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,permissions,REQUEST_CODE);
+                return;
+
+            } else {
+                Log.e(TAG,"已授权");
+
+                locationClient.start();
+            }
+
+//            if ()
+
+
+        } else {
+            locationClient.start();
+        }
     }
 
     private void initLocation(){
@@ -49,8 +85,19 @@ public class MainActivity extends AppCompatActivity {
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
         locationClient.setLocOption(option);
 
-        locationClient.start();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        switch (requestCode) {
+            case REQUEST_CODE :
+
+                Log.e(TAG,grantResults[0] + "  "  + grantResults[1] + "  " + PackageManager.PERMISSION_GRANTED);
+
+                break;
+        }
+
+    }
 }
