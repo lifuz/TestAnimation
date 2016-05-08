@@ -38,6 +38,25 @@ public class MyLocationListener implements BDLocationListener {
         sb.append(location.getLongitude());
         sb.append("\nradius : ");
         sb.append(location.getRadius());
+        sb.append("\nCountryCode : ");
+        sb.append(location.getCountryCode());
+        sb.append("\nCountry : ");
+        sb.append(location.getCountry());
+        sb.append("\ncitycode : ");
+        sb.append(location.getCityCode());
+        sb.append("\ncity : ");
+        sb.append(location.getCity());
+        sb.append("\nDistrict : ");
+        sb.append(location.getDistrict());
+        sb.append("\nStreet : ");
+        sb.append(location.getStreet());
+        sb.append("\naddr : ");
+        sb.append(location.getAddrStr());
+        sb.append("\nDescribe: ");
+        sb.append(location.getLocationDescribe());
+        sb.append("\nDirection(not all devices have value): ");
+        sb.append(location.getDirection());
+        sb.append("\nPoi: ");
         if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
             sb.append("\nspeed : ");
             sb.append(location.getSpeed());// 单位：公里每小时
