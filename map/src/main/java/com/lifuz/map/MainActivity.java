@@ -12,11 +12,14 @@ import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
 import com.lifuz.map.application.MapApplication;
-import com.lifuz.map.listener.MyLocationListener;
 import com.lifuz.map.service.LocationService;
 import com.lifuz.map.utils.BaiDuLocationError;
 import com.lifuz.map.utils.Utils;
@@ -28,18 +31,22 @@ public class MainActivity extends AppCompatActivity {
 
     private LocationService locationService = null;
 
+    private PoiSearch poiSearch = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
-//        //注意该方法要再setContentView方法之前实现
-//        SDKInitializer.initialize(getApplicationContext());
 
         setContentView(R.layout.activity_main);
 
         locationService = ((MapApplication) getApplication()).locationService;
         locationService.registerListener(locationListener);
+
+        poiSearch = PoiSearch.newInstance();
+        poiSearch.setOnGetPoiSearchResultListener(poiListener);
+
+
 
         //安卓6.0开始某些权限需要动态获取，以下就是动态获取授权的方法
         if (Build.VERSION.SDK_INT >= 23) {
@@ -64,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "已授权");
 
                 locationService.start();
+                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
             }
 
         } else {
@@ -75,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        poiSearch.destroy();
 
         locationService.unregisterListener(locationListener);
         locationService.stop();
@@ -88,12 +98,41 @@ public class MainActivity extends AppCompatActivity {
                     bdLocation.getLocType() == BaiDuLocationError.INTERNET_LOCATION_RESULT) {
 
                 Utils.Toast(MainActivity.this, bdLocation.getAddrStr());
+                locationService.stop();
+                LatLng latLng = new LatLng(bdLocation.getLatitude(),bdLocation.getLongitude());
+
+//                poiSearch.searchNearby((new PoiNearbySearchOption()).location(latLng)
+//                        .keyword("美食").pageNum(10).pageCapacity(20).radius(1000));
+
+
 
             } else {
                 Utils.Toast(MainActivity.this, "定位失败：" + bdLocation.getLocType());
             }
 
 
+        }
+    };
+
+    OnGetPoiSearchResultListener poiListener = new OnGetPoiSearchResultListener() {
+        @Override
+        public void onGetPoiResult(PoiResult poiResult) {
+
+
+            Log.e(TAG,poiResult.error + "");
+
+            Log.e(TAG,"lifuz");
+
+            Log.e(TAG,poiResult.getAllPoi().size() + "lifuz");
+
+
+        }
+
+        @Override
+        public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+
+            Log.e(TAG,poiDetailResult.getAddress() + "lifuz");
+            Utils.Toast(MainActivity.this,poiDetailResult.getAddress());
         }
     };
 
@@ -115,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, grantResults[0] + "  " + grantResults[1] + "  " + PackageManager.PERMISSION_GRANTED);
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
+                    poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
                     locationService.start();
 
                 } else {
