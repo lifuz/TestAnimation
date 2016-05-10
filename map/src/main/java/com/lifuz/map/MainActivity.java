@@ -10,34 +10,43 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
-import com.lifuz.map.listener.MyLocationListener;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.lifuz.map.application.MapApplication;
+import com.lifuz.map.service.LocationService;
+import com.lifuz.map.utils.BaiDuLocationError;
+import com.lifuz.map.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 110;
     private static final String TAG = "MainActivity";
 
-    private LocationClient locationClient = null;
-    private BDLocationListener myListener = new MyLocationListener();
+    private LocationService locationService = null;
+
+    private PoiSearch poiSearch = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
-        //注意该方法要再setContentView方法之前实现
-        SDKInitializer.initialize(getApplicationContext());
 
         setContentView(R.layout.activity_main);
 
-        locationClient = new LocationClient(getApplicationContext());
-        locationClient.registerLocationListener(myListener);
+        locationService = ((MapApplication) getApplication()).locationService;
+        locationService.registerListener(locationListener);
 
-        initLocation();
+        poiSearch = PoiSearch.newInstance();
+        poiSearch.setOnGetPoiSearchResultListener(poiListener);
+
+
 
         //安卓6.0开始某些权限需要动态获取，以下就是动态获取授权的方法
         if (Build.VERSION.SDK_INT >= 23) {
@@ -61,43 +70,71 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.e(TAG, "已授权");
 
-                locationClient.start();
+                locationService.start();
+                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
             }
 
-//            if ()
-
-
         } else {
-            locationClient.start();
+            locationService.start();
         }
     }
 
-    private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
-        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
-//        option.setOpenGps(true);
-        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-        option.setOpenGps(true);//可选，默认false,设置是否使用gps
-        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
-        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-        locationClient.setLocOption(option);
-
-    }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        locationClient.stop();
+        poiSearch.destroy();
+
+        locationService.unregisterListener(locationListener);
+        locationService.stop();
     }
+
+    BDLocationListener locationListener = new BDLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+
+            if (bdLocation.getLocType() == BaiDuLocationError.GPS_LOCATION_RESULT ||
+                    bdLocation.getLocType() == BaiDuLocationError.INTERNET_LOCATION_RESULT) {
+
+                Utils.Toast(MainActivity.this, bdLocation.getAddrStr());
+                locationService.stop();
+                LatLng latLng = new LatLng(bdLocation.getLatitude(),bdLocation.getLongitude());
+
+//                poiSearch.searchNearby((new PoiNearbySearchOption()).location(latLng)
+//                        .keyword("美食").pageNum(10).pageCapacity(20).radius(1000));
+
+
+
+            } else {
+                Utils.Toast(MainActivity.this, "定位失败：" + bdLocation.getLocType());
+            }
+
+
+        }
+    };
+
+    OnGetPoiSearchResultListener poiListener = new OnGetPoiSearchResultListener() {
+        @Override
+        public void onGetPoiResult(PoiResult poiResult) {
+
+
+            Log.e(TAG,poiResult.error + "");
+
+            Log.e(TAG,"lifuz");
+
+            Log.e(TAG,poiResult.getAllPoi().size() + "lifuz");
+
+
+        }
+
+        @Override
+        public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+
+            Log.e(TAG,poiDetailResult.getAddress() + "lifuz");
+            Utils.Toast(MainActivity.this,poiDetailResult.getAddress());
+        }
+    };
 
     /**
      * 授权结果返回方法
@@ -115,6 +152,16 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_CODE:
 
                 Log.e(TAG, grantResults[0] + "  " + grantResults[1] + "  " + PackageManager.PERMISSION_GRANTED);
+
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
+                    locationService.start();
+
+                } else {
+
+                    Utils.Toast(this, "获取授权失败，定位不能进行");
+
+                }
 
                 break;
         }
