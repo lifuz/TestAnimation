@@ -18,6 +18,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
@@ -89,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
 //                    e.printStackTrace();
 //                }
 
-//                locationService.start();
+                locationService.start();
 //                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
             }
 
         } else {
-//            locationService.start();
+            locationService.start();
         }
     }
 
@@ -140,9 +141,11 @@ public class MainActivity extends AppCompatActivity {
 
             Log.e(TAG,poiResult.error + "");
 
-            Log.e(TAG,"lifuz");
+            Log.e(TAG,poiResult.getAllPoi().size() + "");
 
-            Log.e(TAG,poiResult.getAllPoi().size() + "lifuz");
+            for (PoiInfo poiInfo : poiResult.getAllPoi()) {
+                Log.e(TAG,poiInfo.address);
+            }
 
 
         }
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 //                    poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
-//                    locationService.start();
+                    locationService.start();
 
                 } else {
 
@@ -201,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_OK)) {
 //                text.setText("key 验证成功! 功能可以正常使用");
                 Log.e("tag" , "key 验证成功! 功能可以正常使用");
-                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
+//                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(20).pageCapacity(20));
 
 //                text.setTextColor(Color.YELLOW);
             }
