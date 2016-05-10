@@ -1,6 +1,10 @@
 package com.lifuz.map;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
@@ -33,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     private PoiSearch poiSearch = null;
 
+
+    private BroadcastReceiver mReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +54,12 @@ public class MainActivity extends AppCompatActivity {
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(poiListener);
 
-
+        IntentFilter iFilter = new IntentFilter();
+        iFilter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_OK);
+        iFilter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR);
+        iFilter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);
+        mReceiver = new SDKReceiver();
+        registerReceiver(mReceiver, iFilter);
 
         //安卓6.0开始某些权限需要动态获取，以下就是动态获取授权的方法
         if (Build.VERSION.SDK_INT >= 23) {
@@ -70,12 +83,18 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.e(TAG, "已授权");
 
-                locationService.start();
-                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
+//                try {
+//                    Thread.sleep(10000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
+//                locationService.start();
+//                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
             }
 
         } else {
-            locationService.start();
+//            locationService.start();
         }
     }
 
@@ -154,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, grantResults[0] + "  " + grantResults[1] + "  " + PackageManager.PERMISSION_GRANTED);
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
-                    locationService.start();
+//                    poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
+//                    locationService.start();
 
                 } else {
 
@@ -166,6 +185,31 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+    }
+
+    /**
+     * 构造广播监听类，监听 SDK key 验证以及网络异常广播
+     */
+    public class SDKReceiver extends BroadcastReceiver {
+        public void onReceive(Context context, Intent intent) {
+            String s = intent.getAction();
+            Log.d("TAG", "action: " + s);
+            if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
+//                text.setText("key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置");
+
+                Log.e("tag" , "key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置");
+            } else if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_OK)) {
+//                text.setText("key 验证成功! 功能可以正常使用");
+                Log.e("tag" , "key 验证成功! 功能可以正常使用");
+                poiSearch.searchInCity(new PoiCitySearchOption().city("上海").keyword("美食").pageNum(6));
+
+//                text.setTextColor(Color.YELLOW);
+            }
+            else if (s.equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
+//                text.setText("网络出错");
+                Log.e("tag" , "网络出错");
+            }
+        }
     }
 
 }
