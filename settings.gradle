@@ -1,1 +1,1 @@
-include ':app', ':shake', ':self', ':map'
+include ':app', ':shake', ':self', ':map', ':jpush'

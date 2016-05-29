@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TestAnimation.iml" filepath="$PROJECT_DIR$/TestAnimation.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jpush/jpush.iml" filepath="$PROJECT_DIR$/jpush/jpush.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />
       <module fileurl="file://$PROJECT_DIR$/self/self.iml" filepath="$PROJECT_DIR$/self/self.iml" />
       <module fileurl="file://$PROJECT_DIR$/shake/shake.iml" filepath="$PROJECT_DIR$/shake/shake.iml" />

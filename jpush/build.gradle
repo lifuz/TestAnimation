@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.lifuz.self"
+        applicationId "com.lifuz.jpush"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -29,20 +29,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/httpmime-4.1.2.jar')
-    compile files('libs/IndoorscapeAlbumPlugin.jar')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile files('libs/jpush-android-2.1.5.jar')
 
-    /**
-     * lombok：去除bean沉余
-     */
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile 'org.projectlombok:lombok:1.16.6'
 
-    /**
-     * butterknife
-     */
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
 }
