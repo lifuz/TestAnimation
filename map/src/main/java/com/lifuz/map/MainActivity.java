@@ -20,7 +20,6 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
-import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
@@ -110,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
         locationService.stop();
     }
 
+    /**
+     * 监听定位的返回结果
+     */
     BDLocationListener locationListener = new BDLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
@@ -121,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 locationService.stop();
                 LatLng latLng = new LatLng(bdLocation.getLatitude(),bdLocation.getLongitude());
 
-//                poiSearch.searchNearby((new PoiNearbySearchOption()).location(latLng)
-//                        .keyword("美食").pageNum(10).pageCapacity(20).radius(1000));
+                poiSearch.searchNearby((new PoiNearbySearchOption()).location(latLng)
+                        .keyword("美食").pageNum(10).pageCapacity(20).radius(3000));
 
 
 
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * 获取poi检索结果的监听
+     */
     OnGetPoiSearchResultListener poiListener = new OnGetPoiSearchResultListener() {
         @Override
         public void onGetPoiResult(PoiResult poiResult) {

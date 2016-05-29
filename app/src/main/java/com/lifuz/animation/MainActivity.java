@@ -6,15 +6,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textWidget;
+    @BindView(R.id.text_widget)
+    TextView textWidget;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.rotate);
 
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        textWidget = (TextView) findViewById(R.id.text_widget);
+//        textWidget = (TextView) findViewById(R.id.text_widget);
         textWidget.setText("画面旋转动画效果");
         textWidget.startAnimation(anim);
     }
