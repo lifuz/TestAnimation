@@ -16,5 +16,6 @@ public class JPushApplication extends Application {
         super.onCreate();
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+        JPushInterface.requestPermission(this);
     }
 }

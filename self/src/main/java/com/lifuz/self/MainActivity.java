@@ -1,20 +1,18 @@
 package com.lifuz.self;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-public class MainActivity extends AppCompatActivity {
+import com.lifuz.self.activity.BaseActivity;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabClickListener;
 
-    private static final int REQUEST_CODE = 110;
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
+
+    private BottomBar bottomBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,53 +20,38 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        //安卓6.0开始某些权限需要动态获取，以下就是动态获取授权的方法
-        if (Build.VERSION.SDK_INT >= 23) {
+        bottomBar = BottomBar.attach(this,savedInstanceState);
 
-            //判断权限是否已经授权
-            int checkACCESSCOARSELOCATION = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-            int checkACCESSFINELOCATION = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
+        bottomBar.setItems(R.menu.bottombar_menu);
 
-            String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-
-            //如果没有授权，则调用授权方法
-            if (checkACCESSCOARSELOCATION != PackageManager.PERMISSION_GRANTED
-                    || checkACCESSFINELOCATION != PackageManager.PERMISSION_GRANTED) {
-
-                //请求权限
-                ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE);
-                return;
+        bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
 
             }
 
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
 
-        }
+            }
+        });
+
+        bottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.primary));
+        bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.primary));
+
 
 
     }
 
-    /**
-     * 授权结果返回方法
-     *
-     * @param requestCode  授权请求的返回吗
-     * @param permissions  请求那些权限
-     * @param grantResults 每个权限的授权结果
-     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        //根据授权的返回码，确定授权的调用者
-        switch (requestCode) {
-            case REQUEST_CODE:
-
-                Log.e(TAG, grantResults[0] + "  " + grantResults[1] + "  " + PackageManager.PERMISSION_GRANTED);
-
-                break;
-        }
-
+        // Necessary to restore the BottomBar's state, otherwise we would
+        // lose the current tab on orientation change.
+        bottomBar.onSaveInstanceState(outState);
     }
+
+
 
 }

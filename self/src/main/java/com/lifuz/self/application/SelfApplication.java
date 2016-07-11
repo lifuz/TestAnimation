@@ -1,6 +1,11 @@
 package com.lifuz.self.application;
 
+import android.Manifest;
 import android.app.Application;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.lifuz.self.service.LocationService;
@@ -14,9 +19,13 @@ public class SelfApplication extends Application {
 
     public LocationService locationService;
 
+    private static final int REQUEST_CODE = 110;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+
 
 
         locationService = new LocationService(getApplicationContext());// 注册 SDK 广播监听者
