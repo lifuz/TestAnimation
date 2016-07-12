@@ -41,6 +41,7 @@ public class ContactFragment extends BaseFragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
         centerTitle.setText("人脉");
 
     }
