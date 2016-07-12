@@ -8,17 +8,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
-        android:textSize="@dimen/big_title_size"/>
+        android:textSize="@dimen/micro_text_size"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
-        android:textSize="@dimen/second_text_size"/>
+        android:textSize="@dimen/small_text_size"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
-        android:textSize="@dimen/body_text_size"/>
+        android:textSize="@dimen/medium_text_size"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:textSize="@dimen/large_text_size"/>
+
 </LinearLayout>
