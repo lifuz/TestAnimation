@@ -15,12 +15,14 @@ import com.lifuz.self.R;
 import butterknife.BindView;
 
 /**
- * 财富模块的fragment
+ *
+ * 人脉模块的fragment
+ *
  * @author: 李富
  * @email: lifuzz@163.com
- * @time: 2016/7/12 21:34
+ * @time: 2016/7/12 21:36
  */
-public class WealthFragment extends BaseFragment {
+public class ContactFragment extends BaseFragment {
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -30,7 +32,7 @@ public class WealthFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_wealth;
+        return R.layout.fragment_contact;
     }
 
     @Override
@@ -39,9 +41,10 @@ public class WealthFragment extends BaseFragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        centerTitle.setText("财富");
+        centerTitle.setText("人脉");
 
     }
+
 
 
 }
