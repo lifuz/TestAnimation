@@ -8,6 +8,16 @@
 
     <item
         android:id="@+id/bottom_two"
+        android:icon="@mipmap/ic_av_surround_sound"
+        android:title="人脉"/>
+
+    <item
+        android:id="@+id/bottom_three"
+        android:icon="@mipmap/ic_editor_attach_money"
+        android:title="财富"/>
+
+    <item
+        android:id="@+id/bottom_four"
         android:icon="@mipmap/ic_social_person_outline"
         android:title="我"/>
 

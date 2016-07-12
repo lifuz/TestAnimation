@@ -24,6 +24,13 @@ public class MainActivity extends BaseActivity {
 
         bottomBar.setItems(R.menu.bottombar_menu);
 
+        bottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
+        bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.primary));
+        bottomBar.mapColorForTab(2, ContextCompat.getColor(this, R.color.primary_dark));
+        bottomBar.mapColorForTab(3, ContextCompat.getColor(this, R.color.accent));
+
+//        bottomBar.noNavBarGoodness();
+
         bottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
@@ -36,8 +43,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        bottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.primary));
-        bottomBar.mapColorForTab(1, ContextCompat.getColor(this, R.color.primary));
+
 
 
 
