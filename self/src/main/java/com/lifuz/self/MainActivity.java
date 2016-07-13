@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.FrameLayout;
 
 import com.lifuz.self.activity.BaseActivity;
 import com.lifuz.self.fragment.ContactFragment;
@@ -15,9 +14,6 @@ import com.lifuz.self.fragment.MineFragment;
 import com.lifuz.self.fragment.WealthFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
