@@ -1,5 +1,6 @@
 package com.lifuz.self.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -37,6 +38,10 @@ public class LoginActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         centerTitle.setText("登录");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(0F);
+        }
 
     }
 }
