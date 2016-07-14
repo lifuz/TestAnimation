@@ -37,10 +37,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="l7vIj42eUwyPx2AiBr0Ojwtvi3GvDmvw" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,6 +54,10 @@
                 </action>
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="l7vIj42eUwyPx2AiBr0Ojwtvi3GvDmvw" />
     </application>
 
 </manifest>

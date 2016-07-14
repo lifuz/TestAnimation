@@ -46,5 +46,13 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
 
+    /**
+     * 底部bar
+     */
     compile 'com.roughike:bottom-bar:1.4.0'
+
+    /**
+     * 对话框特效
+     */
+    compile 'com.github.florent37:materialtextfield:1.0.6'
 }
