@@ -45,6 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity"/>
+
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -55,11 +59,22 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MainActivity"/>
-
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="l7vIj42eUwyPx2AiBr0Ojwtvi3GvDmvw" />
+
+        <!--qq登录-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencentALnyzM6Jnjw2hi9A" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

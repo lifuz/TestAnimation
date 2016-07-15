@@ -33,26 +33,28 @@ dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/httpmime-4.1.2.jar')
     compile files('libs/IndoorscapeAlbumPlugin.jar')
-
     /**
-     * lombok：去除bean沉余
+     *  lombok：去除bean沉余
      */
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile 'org.projectlombok:lombok:1.16.6'
-
     /**
-     * butterknife
+     *  butterknife
      */
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-
     /**
-     * 底部bar
+     *  底部bar
      */
     compile 'com.roughike:bottom-bar:1.4.0'
-
     /**
-     * 对话框特效
+     *  对话框特效
      */
     compile 'com.github.florent37:materialtextfield:1.0.6'
+
+    /**
+     *qq登录
+     */
+    compile files('libs/mta-sdk-1.6.2.jar')
+    compile files('libs/open_sdk_r5756.jar')
 }
