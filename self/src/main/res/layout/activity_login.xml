@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             app:mtf_image="@mipmap/ic_communication_stay_current_portrait"
             android:layout_gravity="center"
+
             >
 
             <android.support.design.widget.TextInputEditText
@@ -40,7 +41,7 @@
             android:layout_marginTop="10dp"
             >
 
-            <android.support.design.widget.TextInputEditText
+            <com.lifuz.self.widget.PasswdEditText
                 android:id="@+id/login_passwd_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +49,9 @@
                 android:textColor="@color/primary_text"
                 android:textColorHint="@color/secondary_text"
                 android:textSize="15sp"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:drawableRight="@mipmap/ic_action_visibility_off"
+                />
 
         </com.github.florent37.materialtextfield.MaterialTextField>
 
