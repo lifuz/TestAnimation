@@ -23,11 +23,11 @@ import butterknife.BindView;
  */
 public class MineFragment extends BaseFragment {
 
-    @BindView(R.id.toolbar)
-    protected Toolbar toolbar;
-
-    @BindView(R.id.center_title)
-    protected TextView centerTitle;
+//    @BindView(R.id.toolbar)
+//    protected Toolbar toolbar;
+//
+//    @BindView(R.id.center_title)
+//    protected TextView centerTitle;
 
 
     @Override
@@ -38,10 +38,10 @@ public class MineFragment extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        centerTitle.setText("我");
+//        centerTitle.setText("我");
 
     }
 }
