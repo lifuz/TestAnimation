@@ -42,4 +42,39 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
 
+    /**
+     *dagger
+     */
+    compile "com.google.dagger:dagger:2.5"
+    apt "com.google.dagger:dagger-compiler:2.5"
+
+    /**
+     * rxBinding
+     * compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+     compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
+     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+     */
+
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
+
+    /**
+     * retrofit2
+     */
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile "com.squareup.retrofit2:converter-gson:2.1.0"
+    compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
+
+    /**
+     * okHttp
+     */
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile "com.squareup.okhttp3:logging-interceptor:3.4.1"
+
+    /**
+     * gson
+     */
+    compile 'com.google.code.gson:gson:2.7'
+
 }

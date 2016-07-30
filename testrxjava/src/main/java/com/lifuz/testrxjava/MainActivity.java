@@ -1,6 +1,8 @@
 package com.lifuz.testrxjava;
 
 import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,13 +10,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.lifuz.testrxjava.api.RxService;
+import com.lifuz.testrxjava.api.Test.TestApi;
+import com.lifuz.testrxjava.model.test.Test;
+
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +40,76 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        TestApi testApi = RxService.createAPI(TestApi.class);
+
+        testApi.getTest(1)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Test>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.e(TAG,e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Test test) {
+
+                        Log.e(TAG,"执行成功");
+
+                        Log.e(TAG,test.toString());
+                    }
+                });
+
+
+//        testTransform();
+
+
+//        observable.subscribe(observer);
+
+//        observable.subscribe(subscriber)
+
+    }
+
+    public void testTransform() {
+
+        Observable.just("images/ic_login_qq_icon.png")
+                .map(new Func1<String, Bitmap>() {
+                    @Override
+                    public Bitmap call(String filePath) {
+                        try {
+                            return BitmapFactory.decodeStream(getAssets().open(filePath));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Bitmap>() {
+                    @Override
+                    public void call(Bitmap bitmap) {
+
+                        if (bitmap != null) {
+
+//                            ivShow.setImageBitmap(bitmap);
+                        }
+                    }
+                });
+
+    }
+
+    /**
+     * 测试使用rxJava 的Scheduler
+     */
+    public void testScheduler() {
 
         final int drawableRes = R.mipmap.ic_launcher;
 
@@ -56,21 +135,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
 
-                        Log.e(TAG,e.getMessage());
+                        Log.e(TAG, e.getMessage());
                     }
 
                     @Override
                     public void onNext(Drawable drawable) {
 
-                        ivShow.setImageDrawable(drawable);
+//                        ivShow.setImageDrawable(drawable);
 
                     }
                 });
-
-//        observable.subscribe(observer);
-
-//        observable.subscribe(subscriber)
-
     }
 
     //被观察者
@@ -85,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
             subscriber.onCompleted();
         }
     });
+
+//
 
 
     //观察者
