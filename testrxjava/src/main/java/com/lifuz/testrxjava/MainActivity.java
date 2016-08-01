@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.lifuz.testrxjava.api.RxService;
 import com.lifuz.testrxjava.api.Test.TestApi;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.iv_show)
     protected ImageView ivShow;
+
+    @BindView(R.id.tv)
+    protected TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(TAG,"执行成功");
 
                         Log.e(TAG,test.toString());
+
+//                        tv.set
                     }
                 });
 
