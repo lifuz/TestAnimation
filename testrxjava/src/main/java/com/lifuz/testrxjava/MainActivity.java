@@ -11,11 +11,13 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lifuz.testrxjava.api.RxService;
-import com.lifuz.testrxjava.api.Test.TestApi;
-import com.lifuz.testrxjava.model.test.Test;
+import com.lifuz.testrxjava.ui.activity.component.DaggerMainAcitivityComponent;
+import com.lifuz.testrxjava.ui.activity.module.MainActivityModule;
+import com.lifuz.testrxjava.ui.activity.presenter.MainPresenter;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv)
     protected TextView tv;
 
+    @Inject
+    MainPresenter mainPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,33 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        TestApi testApi = RxService.createAPI(TestApi.class);
+        inject();
 
-        testApi.getTest(1)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Test>() {
-                    @Override
-                    public void onCompleted() {
+        mainPresenter.showName();
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        Log.e(TAG,e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Test test) {
-
-                        Log.e(TAG,"执行成功");
-
-                        Log.e(TAG,test.toString());
-
-//                        tv.set
-                    }
-                });
+//        TestApi testApi = RxService.createAPI(TestApi.class);
 
 
 //        testTransform();
@@ -80,6 +63,22 @@ public class MainActivity extends AppCompatActivity {
 
 //        observable.subscribe(subscriber)
 
+    }
+
+    private void inject() {
+        AppComponent appComponent = ((AppApplication) getApplication()).getAppComponent();
+
+        DaggerMainAcitivityComponent
+                .builder()
+                .appComponent(appComponent)
+                .mainActivityModule(new MainActivityModule(this))
+                .build().inject(this);
+
+
+    }
+
+    public void showName(String name) {
+        tv.setText(name);
     }
 
     public void testTransform() {
