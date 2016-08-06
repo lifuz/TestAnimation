@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.lifuz.self.activity.BaseActivity;
+import com.lifuz.self.ui.activity.BaseActivity;
 import com.lifuz.self.fragment.ContactFragment;
 import com.lifuz.self.fragment.KnowledgeFragment;
 import com.lifuz.self.fragment.MineFragment;

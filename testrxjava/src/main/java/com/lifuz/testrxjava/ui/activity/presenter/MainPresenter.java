@@ -53,7 +53,7 @@ public class MainPresenter {
 
                         Log.e(TAG,"执行成功");
 
-                       activity.showName(test.isExposed() + "");
+                       activity.showName( "");
                     }
                 });
     }

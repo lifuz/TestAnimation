@@ -1,13 +1,9 @@
 package com.lifuz.self.application;
 
-import android.Manifest;
 import android.app.Application;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.lifuz.self.api.APIService;
 import com.lifuz.self.service.LocationService;
 
 /**
@@ -18,6 +14,8 @@ import com.lifuz.self.service.LocationService;
 public class SelfApplication extends Application {
 
     public LocationService locationService;
+
+    private AppComponent appComponent;
 
     private static final int REQUEST_CODE = 110;
 
@@ -34,7 +32,13 @@ public class SelfApplication extends Application {
         //注意该方法要再setContentView方法之前实现
         SDKInitializer.initialize(getApplicationContext());
 
+        appComponent = DaggerAppComponent.builder()
+                .aPIService(new APIService())
+                .build();
+
     }
 
-
+    public AppComponent getAppComponent() {
+        return appComponent;
+    }
 }

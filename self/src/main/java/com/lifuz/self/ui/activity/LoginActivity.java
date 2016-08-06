@@ -20,6 +20,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lifuz.self.R;
+import com.lifuz.self.application.AppComponent;
+import com.lifuz.self.application.SelfApplication;
+import com.lifuz.self.ui.activity.component.DaggerLoginComponent;
+import com.lifuz.self.ui.activity.module.LoginModule;
+import com.lifuz.self.ui.activity.presenter.LoginPresenter;
 import com.lifuz.self.ui.widget.PasswdEditText;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
@@ -28,6 +33,8 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import org.json.JSONObject;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +51,9 @@ public class LoginActivity extends BaseActivity {
 
 
     private static final String TAG = "LoginActivity";
+
+    @Inject
+    private LoginPresenter loginPresenter;
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -71,6 +81,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+        inject();
 
         ButterKnife.bind(this);
 
@@ -140,6 +152,17 @@ public class LoginActivity extends BaseActivity {
         }
 
 
+    }
+
+    private void inject() {
+
+        AppComponent appComponent = ((SelfApplication )getApplication()).getAppComponent();
+
+        DaggerLoginComponent.builder()
+                .appComponent(appComponent)
+                .loginModule(new LoginModule(this))
+                .build()
+                .inject(this);
     }
 
     /**
