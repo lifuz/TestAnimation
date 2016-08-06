@@ -1,4 +1,4 @@
-package com.lifuz.self.widget;
+package com.lifuz.self.ui.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

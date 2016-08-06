@@ -1,4 +1,4 @@
-package com.lifuz.self.activity;
+package com.lifuz.self.ui.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,23 +8,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lifuz.self.R;
-import com.lifuz.self.widget.PasswdEditText;
+import com.lifuz.self.ui.widget.PasswdEditText;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;

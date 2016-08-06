@@ -1,4 +1,4 @@
-package com.lifuz.self.activity;
+package com.lifuz.self.ui.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

@@ -41,7 +41,7 @@
             android:layout_marginTop="10dp"
             >
 
-            <com.lifuz.self.widget.PasswdEditText
+            <com.lifuz.self.ui.widget.PasswdEditText
                 android:id="@+id/login_passwd_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
