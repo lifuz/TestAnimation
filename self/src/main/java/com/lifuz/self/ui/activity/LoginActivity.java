@@ -21,15 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lifuz.self.MainActivity;
 import com.lifuz.self.R;
 import com.lifuz.self.application.AppComponent;
 import com.lifuz.self.application.SelfApplication;
+import com.lifuz.self.enums.MineState;
 import com.lifuz.self.model.common.SelfResult;
+import com.lifuz.self.model.mine.QQUserInfo;
 import com.lifuz.self.model.mine.Token;
 import com.lifuz.self.ui.activity.component.DaggerLoginComponent;
 import com.lifuz.self.ui.activity.module.LoginModule;
 import com.lifuz.self.ui.activity.presenter.LoginPresenter;
 import com.lifuz.self.ui.widget.PasswdEditText;
+import com.lifuz.self.util.SharedPreferencesUtils;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
@@ -37,6 +41,9 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -80,11 +87,22 @@ public class LoginActivity extends BaseActivity {
 
     private UserInfo userInfo = null;
 
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+        Token token = SharedPreferencesUtils.getToken(this);
+
+        if(token !=null) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+        gson = new Gson();
 
         inject();
 
@@ -180,22 +198,48 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    public void register(SelfResult<MineState> mineStateSelfResult){
+
+        if(mineStateSelfResult.isSuccess()) {
+            loginPresenter.qqLogin(tencent.getQQToken().getOpenId());
+        } else {
+            Toast.makeText(this,"qq登录失败",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     public void qqlogin(SelfResult<Token> tokenSelfResult){
-
-
 
         if (tokenSelfResult.isSuccess()){
 
-        } else {
-            if (tokenSelfResult.equals("此用户尚未注册")){
+            Map<String, String> map = new HashMap<>();
 
+            String json = gson.toJson(tokenSelfResult.getData(),Token.class);
+
+            map.put("token",json);
+            SharedPreferencesUtils.saveTakon(this,map);
+
+            Toast.makeText(this,"登录成功",Toast.LENGTH_SHORT).show();
+
+        } else {
+            if (tokenSelfResult.getError().equals("此用户尚未注册")){
+                userInfo = new UserInfo(LoginActivity.this, tencent.getQQToken());
                 userInfo.getUserInfo(new IUiListener() {
                     @Override
                     public void onComplete(Object o) {
                         Log.e(TAG, "获取信息成功");
-//                        Log.e(TAG, o.toString());
+                        Log.e(TAG, o.toString());
 
-                        Gson gson = new Gson();
+                        QQUserInfo qqUserInfo = gson.fromJson(o.toString(),QQUserInfo.class);
+                        Log.e(TAG,qqUserInfo.toString());
+
+                        Map<String,String> map = new HashMap<String, String>();
+                        map.put("qqOpenId",tencent.getQQToken().getOpenId());
+                        map.put("userName",qqUserInfo.getNickname());
+                        map.put("userHeadPortrait",qqUserInfo.getFigureurl_qq_2());
+
+
+                        loginPresenter.register(map);
 
                     }
 
@@ -276,7 +320,7 @@ public class LoginActivity extends BaseActivity {
             Log.e(TAG, tencent.getQQToken().getOpenId());
 
 
-//            userInfo = new UserInfo(LoginActivity.this, tencent.getQQToken());
+//
 
             loginPresenter.qqLogin(tencent.getQQToken().getOpenId());
 

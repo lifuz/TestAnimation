@@ -24,6 +24,13 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/maven/commons-io/commons-io/pom.xml'
+        exclude 'META-INF/maven/commons-io/commons-io/pom.properties'
+        exclude 'META-INF/maven/com.auth0/java-jwt/pom.xml'
+        exclude 'META-INF/maven/com.auth0/java-jwt/pom.properties'
+    }
 }
 
 dependencies {
@@ -99,4 +106,9 @@ dependencies {
      * gson
      */
     compile 'com.google.code.gson:gson:2.7'
+
+    /**
+     * token相关
+     */
+    compile 'com.auth0:java-jwt:2.2.0'
 }

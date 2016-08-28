@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QQUserInfo {
 
-    private String nickName;
+    private String nickname;
 
     private String figureurl_qq_2;
 

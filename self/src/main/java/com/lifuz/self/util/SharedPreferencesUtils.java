@@ -3,7 +3,6 @@ package com.lifuz.self.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.session.MediaSession;
 
 import com.google.gson.Gson;
 import com.lifuz.self.model.mine.Token;
@@ -48,22 +47,8 @@ public class SharedPreferencesUtils {
     }
 
     /**
-     * 获取qq登录的 openId
-     * @param context
-     * @return
-     */
-    public static String getQQOpenId(Context context) {
-        String openId = null;
-
-        SharedPreferences share = context.getSharedPreferences("self", Activity.MODE_PRIVATE);
-
-        openId = share.getString("QQopenId","");
-
-        return openId;
-    }
-
-    /**
      * 获取 token 信息
+     *
      * @param context
      * @return
      */
@@ -72,17 +57,17 @@ public class SharedPreferencesUtils {
 
         SharedPreferences share = context.getSharedPreferences("self", Activity.MODE_PRIVATE);
 
-        String tokenStr = share.getString("token","");
+        String tokenStr = share.getString("token", "");
 
-        if(!"".equals(tokenStr)){
+        if (!"".equals(tokenStr)) {
 
             Gson gson = new Gson();
 
-            token = gson.fromJson(tokenStr,Token.class);
+            token = gson.fromJson(tokenStr, Token.class);
 
         }
 
-        return  token;
+        return token;
     }
 
 }

@@ -5,11 +5,14 @@ import com.lifuz.self.model.common.SelfResult;
 import com.lifuz.self.model.mine.Token;
 import com.lifuz.self.model.mine.User;
 
+import java.util.Map;
+
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -22,6 +25,9 @@ import rx.Observable;
  * 时间：2016/8/6 13:50
  */
 public interface UserApi {
+
+    @POST("appUser/register")
+    Observable<SelfResult<MineState>> register(@QueryMap Map<String,String> map);
 
     @POST("appUser/register")
     Observable<SelfResult<MineState>> register(@Body User user);

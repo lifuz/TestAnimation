@@ -1,12 +1,15 @@
 package com.lifuz.self.ui.activity.presenter;
 
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.lifuz.self.api.mine.UserApi;
+import com.lifuz.self.enums.MineState;
 import com.lifuz.self.model.common.SelfResult;
 import com.lifuz.self.model.mine.Token;
+import com.lifuz.self.model.mine.User;
 import com.lifuz.self.ui.activity.LoginActivity;
+
+import java.util.Map;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -58,6 +61,31 @@ public class LoginPresenter {
 
                         Log.e(TAG,tokenSelfResult.toString());
                         activity.show();
+
+                    }
+                });
+    }
+
+    public void register(Map<String,String> map) {
+        userApi.register(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SelfResult<MineState>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(SelfResult<MineState> mineStateSelfResult) {
+                        Log.e(TAG,mineStateSelfResult.toString());
+
+                        activity.register(mineStateSelfResult);
 
                     }
                 });
