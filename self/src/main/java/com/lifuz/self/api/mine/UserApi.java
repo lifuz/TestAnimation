@@ -26,17 +26,38 @@ import rx.Observable;
  */
 public interface UserApi {
 
+    /**
+     * 用户注册接口
+     * @param map
+     * @return
+     */
     @POST("appUser/register")
     Observable<SelfResult<MineState>> register(@QueryMap Map<String,String> map);
 
-    @POST("appUser/register")
-    Observable<SelfResult<MineState>> register(@Body User user);
-
+    /**
+     * 手机号登录接口
+     * @param phone
+     * @param passwd
+     * @return
+     */
     @GET("appUser/{phone}/phoneLogin")
     Observable<SelfResult<Token>> phoneLogin(
             @Path("phone") Long phone, @Query("passwd") String passwd);
 
+    /**
+     * qq登录接口
+     * @param qqOpenId
+     * @return
+     */
     @GET("appUser/{qqOpenId}/qqLogin")
     Observable<SelfResult<Token>> qqLogin(@Path("qqOpenId") String qqOpenId);
+
+    /**
+     * id号登录接口
+     * @param userId
+     * @return
+     */
+    @GET("appUser/{userId}/userId")
+    Observable<SelfResult<Token>> userId(@Path("userId") String userId);
 
 }
