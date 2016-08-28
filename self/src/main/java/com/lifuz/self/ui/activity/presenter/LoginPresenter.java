@@ -1,5 +1,8 @@
 package com.lifuz.self.ui.activity.presenter;
 
+import android.nfc.Tag;
+import android.util.Log;
+
 import com.lifuz.self.api.mine.UserApi;
 import com.lifuz.self.model.common.SelfResult;
 import com.lifuz.self.model.mine.Token;
@@ -46,11 +49,15 @@ public class LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.e(TAG,e.getMessage());
 
                     }
 
                     @Override
                     public void onNext(SelfResult<Token> tokenSelfResult) {
+
+                        Log.e(TAG,tokenSelfResult.toString());
+                        activity.show();
 
                     }
                 });
@@ -69,11 +76,14 @@ public class LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e(TAG,e.getMessage());
                     }
 
                     @Override
                     public void onNext(SelfResult<Token> tokenSelfResult) {
+
+                        Log.e(TAG,tokenSelfResult.toString());
+                        activity.qqlogin(tokenSelfResult);
 
                     }
                 });

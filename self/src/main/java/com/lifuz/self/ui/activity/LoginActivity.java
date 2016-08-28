@@ -18,10 +18,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lifuz.self.R;
 import com.lifuz.self.application.AppComponent;
 import com.lifuz.self.application.SelfApplication;
+import com.lifuz.self.model.common.SelfResult;
+import com.lifuz.self.model.mine.Token;
 import com.lifuz.self.ui.activity.component.DaggerLoginComponent;
 import com.lifuz.self.ui.activity.module.LoginModule;
 import com.lifuz.self.ui.activity.presenter.LoginPresenter;
@@ -53,7 +57,7 @@ public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
 
     @Inject
-    private LoginPresenter loginPresenter;
+    LoginPresenter loginPresenter;
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -91,6 +95,19 @@ public class LoginActivity extends BaseActivity {
 
         tencent = Tencent.createInstance(getString(R.string.qq_app_id), this);
 
+        initView();
+
+
+//        loginPresenter.phoneLogin(13013874964L,"8");
+//        loginPresenter.qqLogin("1234");
+
+    }
+
+    public void show(){
+        Toast.makeText(this,"xianshi",Toast.LENGTH_SHORT).show();
+    }
+
+    private void initView() {
         qq_login_btn.setFocusable(true);
         qq_login_btn.requestFocus();
 
@@ -133,12 +150,12 @@ public class LoginActivity extends BaseActivity {
                 //切换后将EditText光标置于末尾
                 CharSequence charSequence = login_passwd_et.getText();
                 if (charSequence instanceof Spannable) {
-                        Spannable spanText = (Spannable) charSequence;
+                    Spannable spanText = (Spannable) charSequence;
                     Selection.setSelection(spanText, charSequence.length());
 
                 }
 
-                login_passwd_et.setCompoundDrawablesWithIntrinsicBounds(null,null,rightDrawable,null);
+                login_passwd_et.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
 
 
             }
@@ -150,26 +167,59 @@ public class LoginActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setElevation(0F);
         }
-
-
     }
 
     private void inject() {
 
-        AppComponent appComponent = ((SelfApplication )getApplication()).getAppComponent();
+        AppComponent appComponent = ((SelfApplication)getApplication()).getAppComponent();
 
         DaggerLoginComponent.builder()
                 .appComponent(appComponent)
                 .loginModule(new LoginModule(this))
-                .build()
-                .inject(this);
+                .build().inject(this);
+
+    }
+
+    public void qqlogin(SelfResult<Token> tokenSelfResult){
+
+
+
+        if (tokenSelfResult.isSuccess()){
+
+        } else {
+            if (tokenSelfResult.equals("此用户尚未注册")){
+
+                userInfo.getUserInfo(new IUiListener() {
+                    @Override
+                    public void onComplete(Object o) {
+                        Log.e(TAG, "获取信息成功");
+//                        Log.e(TAG, o.toString());
+
+                        Gson gson = new Gson();
+
+                    }
+
+                    @Override
+                    public void onError(UiError uiError) {
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+
+            }
+        }
+
     }
 
     /**
      * qq登录
      */
     @OnClick(R.id.qq_login_btn)
-    public void qqLogin() {
+    public void qqLoginBtn() {
 
         Log.e(TAG, "qq_login_btn is onClick");
 
@@ -226,25 +276,11 @@ public class LoginActivity extends BaseActivity {
             Log.e(TAG, tencent.getQQToken().getOpenId());
 
 
-            userInfo = new UserInfo(LoginActivity.this, tencent.getQQToken());
+//            userInfo = new UserInfo(LoginActivity.this, tencent.getQQToken());
 
-            userInfo.getUserInfo(new IUiListener() {
-                @Override
-                public void onComplete(Object o) {
-                    Log.e(TAG, "获取信息成功");
-                    Log.e(TAG, o.toString());
-                }
+            loginPresenter.qqLogin(tencent.getQQToken().getOpenId());
 
-                @Override
-                public void onError(UiError uiError) {
 
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-            });
 
         }
 

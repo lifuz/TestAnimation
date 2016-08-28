@@ -32,12 +32,6 @@ public class LoginModule {
         return activity;
     }
 
-    @Provides
-    public UserApi provideUserApi(Retrofit retrofit){
-
-        return retrofit.create(UserApi.class);
-
-    }
 
     @Provides
     public LoginPresenter provideLoginPresenter(UserApi userApi){

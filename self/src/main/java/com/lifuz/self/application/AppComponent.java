@@ -1,6 +1,7 @@
 package com.lifuz.self.application;
 
 import com.lifuz.self.api.APIService;
+import com.lifuz.self.api.mine.UserApi;
 
 import javax.inject.Singleton;
 
@@ -26,5 +27,7 @@ public interface AppComponent {
     OkHttpClient getClient();
 
     Retrofit getRetrofit();
+
+    UserApi getUserApi();
 
 }

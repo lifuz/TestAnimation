@@ -1,5 +1,7 @@
 package com.lifuz.self.api;
 
+import com.lifuz.self.api.mine.UserApi;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -43,6 +45,14 @@ public class APIService {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+    }
+
+    @Provides
+    @Singleton
+    public UserApi provideUserApi(Retrofit retrofit){
+
+        return retrofit.create(UserApi.class);
 
     }
 
